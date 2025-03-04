@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Page – TWTV, TGW, T3DW & Co.</title>
+    <style>
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #ff6b6b;
+            --background-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #495057;
+            --banner-gradient: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px;
+        }
+        
+        nav ul li {
+            margin: 0 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+        
+        .banner {
+            min-height: 60vh;
+            background: var(--banner-gradient), url('img/background.jpg') no-repeat center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: darkred;
+        }
+        
+        footer {
+            background: var(--dark-color);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Willkommen bei Tims World TV
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#technik">Technik</a></li>
+            <li><a href="#tgw">Gaming</a></li>
+            <li><a href="#dreiD">3D-Lounge</a></li>
+        </ul>
+    </nav>
+    
+    <div id="home" class="section">
+        <div class="banner">
+            <h1>DIE OFFIZIELLE TIMS WORLD TV WEBSITE</h1>
+            <p>Reparatur Videos, Gaming, Vlogs, 3D Printing – hier ist für jeden etwas dabei!</p>
+            <a href="#technik" class="btn">Mehr erfahren</a>
+        </div>
+    </div>
+    
+    <div id="technik" class="section">
+        <h1>Tims World TV – Technik Lounge</h1>
+        <p>Reparatur Videos, Vlogs und vieles mehr rund um Technik.</p>
+    </div>
+    
+    <div id="tgw" class="section">
+        <h1>Tims Gaming World (TGW)</h1>
+        <p>Hier trifft sich die Gaming-Community – Zocken und Spaß pur!</p>
+    </div>
+    
+    <div id="dreiD" class="section">
+        <h1>Tims 3D World (T3DW)</h1>
+        <p>Alles rund um FreeCAD und 3D Printing.</p>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Tims World TV. Alle Rechte vorbehalten.</p>
+    </footer>
+</body>
+</html>
