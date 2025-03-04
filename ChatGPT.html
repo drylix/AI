@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+    <title>Multi Page – TWTV, TGW, T3DW & Co.</title>
+    <style>
+      :root {
+        --primary-color: #00bcd4;
+        --secondary-color: #ff6b6b;
+        --background-color: #f4f4f4;
+        --dark-color: #333;
+        --banner-gradient: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      body {
+        background-color: var(--background-color);
+        color: var(--dark-color);
+        line-height: 1.6;
+      }
+      
+      header {
+        background: var(--primary-color);
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      
+      nav {
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      
+      nav ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+      }
+      
+      nav ul li {
+        margin: 0 15px;
+      }
+      
+      nav ul li a {
+        text-decoration: none;
+        color: var(--dark-color);
+        padding: 10px;
+        transition: color 0.3s ease, background-color 0.3s ease;
+      }
+      
+      nav ul li a:hover {
+        color: var(--primary-color);
+        background-color: rgba(0,188,212,0.1);
+        border-radius: 5px;
+      }
+      
+      .section {
+        display: none;
+        padding: 60px 20px;
+      }
+      
+      .active {
+        display: block;
+      }
+      
+      .banner {
+        min-height: 60vh;
+        background: var(--banner-gradient), url('img/background.jpg') no-repeat center/cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        animation: fadeIn 1s ease;
+      }
+      
+      .banner h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+      
+      .banner p {
+        font-size: 1.5rem;
+        max-width: 800px;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      }
+      
+      .btn {
+        display: inline-block;
+        background: var(--secondary-color);
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+      
+      .btn:hover {
+        background: darkred;
+      }
+      
+      footer {
+        background: #222;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+          padding: 10px;
+        }
+        .banner h1 {
+          font-size: 2.5rem;
+        }
+        .banner p {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+    <script>
+      // Zeigt den gewünschten Abschnitt an
+      function showSection(id) {
+        var sections = document.querySelectorAll('.section');
+        sections.forEach(function(section) {
+          section.classList.remove('active');
+        });
+        document.getElementById(id).classList.add('active');
+      }
+      
+      window.onload = function() {
+        showSection('home');
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Willkommen bei Tims World TV</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('home')">Home</a></li>
+        <li><a href="#" onclick="showSection('technik')">Technik</a></li>
+        <li><a href="#" onclick="showSection('tgw')">Gaming</a></li>
+        <li><a href="#" onclick="showSection('dreiD')">3D-Lounge</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Home -->
+    <div id="home" class="section active">
+      <div class="banner">
+        <h1>DIE OFFIZIELLE TIMS WORLD TV WEBSITE</h1>
+        <p>Reparatur Videos, Gaming, Vlogs, 3D Printing – hier ist für jeden etwas dabei!</p>
+        <a href="#" class="btn" onclick="showSection('technik')">Mehr erfahren</a>
+      </div>
+      <p style="text-align:center; padding:20px;">Der Download der Version 2.1 wird gestartet...</p>
+    </div>
+    
+    <!-- Technik -->
+    <div id="technik" class="section">
+      <div class="banner" style="background: var(--banner-gradient), url('img/technik-bg.jpg') no-repeat center/cover;">
+        <h1>Tims World TV – Technik Lounge</h1>
+        <p>Reparatur Videos, Vlogs und vieles mehr rund um Technik.</p>
+        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
+      </div>
+    </div>
+    
+    <!-- Gaming -->
+    <div id="tgw" class="section">
+      <div class="banner" style="background: var(--banner-gradient), url('img/gaming-bg.jpg') no-repeat center/cover;">
+        <h1>Tims Gaming World (TGW)</h1>
+        <p>Hier trifft sich die Gaming-Community – Zocken und Spaß pur!</p>
+        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
+      </div>
+    </div>
+    
+    <!-- 3D -->
+    <div id="dreiD" class="section">
+      <div class="banner" style="background: var(--banner-gradient), url('img/3d-bg.jpg') no-repeat center/cover;">
+        <h1>Tims 3D World (T3DW)</h1>
+        <p>Alles rund um FreeCAD und 3D Printing.</p>
+        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
+      </div>
+    </div>
+    
+    <!-- Fehler 404 -->
+    <div id="error" class="section">
+      <div class="banner" style="background: var(--banner-gradient), url('img/error-bg.jpg') no-repeat center/cover;">
+        <h1>Fehler 404</h1>
+        <p>Die gesuchte Seite konnte nicht gefunden werden.</p>
+        <a href="#" class="btn" onclick="showSection('home')">Zur Startseite</a>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2025 Tims World TV. Alle Rechte vorbehalten.</p>
+    </footer>
+  </body>
+</html>

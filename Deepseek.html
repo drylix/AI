@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+    <title>Tims Creative World – TWTV, TGW, T3DW & Co.</title>
+    <style>
+    /* === Grundlegende Styles & Variablen === */
+    :root {
+      --primary: #00bcd4;
+      --secondary: #ff6b6b;
+      --accent: #9c27b0;
+      --dark: #2c3e50;
+      --light: #ecf0f1;
+      --gradient-blue: linear-gradient(135deg, #00bcd4, #006064);
+      --gradient-pink: linear-gradient(135deg, #ff6b6b, #c2185b);
+      --gradient-purple: linear-gradient(135deg, #9c27b0, #6a1b9a);
+      --shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    * {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      line-height: 1.6;
+      color: var(--dark);
+      background: var(--light);
+    }
+
+    /* === Allgemeine Komponenten === */
+    .section {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .banner {
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+    }
+
+    /* === Navigationsleiste === */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      box-shadow: var(--shadow);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      width: 140px;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .nav-logo:hover {
+      transform: rotate(-5deg) scale(1.1);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: rgba(0,0,0,0.05);
+    }
+
+    .nav-link:hover::before {
+      width: 100%;
+    }
+
+    /* === Hauptinhalt === */
+    .hero {
+      padding: 120px 20px 80px;
+      text-align: center;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: slideIn 1s ease;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* === Themenbereiche === */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+    }
+
+    .theme-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .theme-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .theme-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* === Farbthemen für Bereiche === */
+    #home { background: var(--gradient-blue); }
+    #technik { background: var(--gradient-purple); }
+    #tgw { background: var(--gradient-pink); }
+    #dreiD { background: linear-gradient(135deg, #4caf50, #2e7d32); }
+    
+    /* === Animations === */
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* === Responsive Design === */
+    @media (max-width: 768px) {
+      .nav-menu {
+        flex-direction: column;
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background: white;
+        width: 100%;
+        padding: 2rem;
+        transition: right 0.3s ease;
+      }
+
+      .nav-menu.active {
+        right: 0;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .theme-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* === Verbesserte Fehlerseite === */
+    #error .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-weight: bold;
+      animation: float 3s ease-in-out infinite;
+      color: var(--secondary);
+    }
+
+    /* === Footer === */
+    .main-footer {
+      background: var(--dark);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    .social-link {
+      color: white;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-link:hover {
+      color: var(--primary);
+    }
+    </style>
+    <script>
+      function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        window.scrollTo(0, 0);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        showSection('home');
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Verbesserte Navigation -->
+    <nav class="main-nav">
+      <div class="nav-container">
+        <img src="img/logo.png" alt="Logo" class="nav-logo" onclick="showSection('home')">
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="#" onclick="showSection('home')">Home</a></li>
+          <li><a class="nav-link" href="#" onclick="showSection('technik')">Technik</a></li>
+          <li><a class="nav-link" href="#" onclick="showSection('tgw')">Gaming</a></li>
+          <li><a class="nav-link" href="#" onclick="showSection('dreiD')">3D World</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home" class="section">
+      <div class="banner">
+        <div class="hero">
+          <h1>Willkommen in Tims Creative World</h1>
+          <p>Entdecke die perfekte Mischung aus Technik, Gaming und Kreativität</p>
+          <div class="theme-grid">
+            <div class="theme-card" onclick="showSection('technik')">
+              <div class="theme-icon">🔧</div>
+              <h3>Technik-Lounge</h3>
+              <p>Reparaturen, Tutorials & Tech-News</p>
+            </div>
+            <div class="theme-card" onclick="showSection('tgw')">
+              <div class="theme-icon">🎮</div>
+              <h3>Gaming Zone</h3>
+              <p>Let's Plays, Streams & Community</p>
+            </div>
+            <div class="theme-card" onclick="showSection('dreiD')">
+              <div class="theme-icon">🖨️</div>
+              <h3>3D Workshop</h3>
+              <p>Druckvorlagen, Tutorials & Projekte</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weitere Sections (Technik, TGW, 3D) analog anpassen -->
+
+    <!-- Verbesserte 404-Seite -->
+    <div id="error" class="section">
+      <div class="banner">
+        <div class="hero">
+          <div class="error-code">404</div>
+          <h2>Oops! Seite nicht gefunden</h2>
+          <p>Die angeforderte Seite existiert nicht.</p>
+          <button onclick="showSection('home')" style="
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+          ">
+            Zur Startseite
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="main-footer">
+      <div class="social-links">
+        <a href="#" class="social-link">📷 Instagram</a>
+        <a href="#" class="social-link">▶️ YouTube</a>
+        <a href="#" class="social-link">💾 Discord</a>
+      </div>
+      <p>© 2023 Tims Creative World – Alle Rechte vorbehalten</p>
+    </footer>
+  </body>
+</html>

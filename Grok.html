@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+    <title>Multi Page – TWTV, TGW, T3DW & Co.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+      * {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+      }
+
+      .banner {
+        width: 100%;
+        min-height: 100vh;
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(img/background.jpg);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu {
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      #home .menu {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      #technik .menu {
+        background-color: rgba(0, 188, 212, 0.1); /* Cyan */
+      }
+      #tgw .menu {
+        background-color: rgba(255, 107, 107, 0.1); /* Rot */
+      }
+      #dreiD .menu {
+        background-color: rgba(255, 215, 0, 0.1); /* Gold */
+      }
+      #error .menu {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .logo {
+        width: 120px;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.1);
+      }
+
+      .menu ul {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+      }
+
+      .menu ul li a {
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 18px;
+        position: relative;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .menu ul li a i {
+        margin-right: 5px;
+      }
+
+      .menu ul li a:hover {
+        color: #00bcd4;
+        transform: scale(1.05);
+      }
+
+      .menu ul li a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 3px;
+        bottom: -5px;
+        left: 0;
+        background-color: #00bcd4;
+        transition: width 0.3s ease;
+      }
+
+      .menu ul li a:hover::after {
+        width: 100%;
+      }
+
+      .content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 0 20px 40px 20px;
+      }
+
+      .content h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+
+      #technik .content h1 {
+        color: #00bcd4;
+      }
+      #tgw .content h1 {
+        color: #ff6b6b;
+      }
+      #dreiD .content h1 {
+        color: #ffd700;
+      }
+
+      .content p {
+        font-size: 1.5rem;
+        max-width: 800px;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      }
+
+      .important a, .important2 a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff6b6b;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .important a:hover, .important2 a:hover {
+        background-color: #e05a5a;
+      }
+
+      .section {
+        display: none;
+        opacity: 0;
+      }
+
+      .section.active {
+        display: block;
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @media (max-width: 768px) {
+        .menu {
+          flex-direction: column;
+          text-align: center;
+          padding: 15px;
+        }
+
+        .menu ul {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 15px;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
+        .content h1 {
+          font-size: 2.5rem;
+        }
+
+        .content p {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+    <script>
+      function showSection(id) {
+        var sections = document.querySelectorAll('.section');
+        sections.forEach(function(section) {
+          section.classList.remove('active');
+        });
+        setTimeout(function() {
+          sections.forEach(function(section) {
+            if (!section.classList.contains('active')) {
+              section.style.display = 'none';
+            }
+          });
+        }, 500);
+        var activeSection = document.getElementById(id);
+        activeSection.style.display = 'block';
+        setTimeout(function() {
+          activeSection.classList.add('active');
+        }, 10);
+      }
+
+      window.onload = function() {
+        showSection('home');
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Home (TWTV/Home) -->
+    <div id="home" class="section active">
+      <div class="banner">
+        <div class="menu">
+          <a href="#" onclick="showSection('home')">
+            <img src="img/logo.png" alt="Logo" class="logo">
+          </a>
+          <ul>
+            <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Startseite</a></li>
+            <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-gamepad"></i> Gaming-Lounge</a></li>
+            <li><a href="#" onclick="showSection('technik')"><i class="fas fa-tools"></i> Technik-Lounge</a></li>
+            <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-cube"></i> 3D-Lounge</a></li>
+          </ul>
+        </div>
+        <div class="content">
+          <h1>DIE OFFIZIELLE TIMS WORLD TV WEBSITE</h1>
+          <p>Reparatur Videos, Gaming, Vlogs, 3D printing – für jeden ist was dabei!</p>
+        </div>
+      </div>
+      <p style="text-align:center; padding:20px;">Der Download der Version 2.1 wird gestartet...</p>
+    </div>
+
+    <!-- Technik (TWTV/Technik) -->
+    <div id="technik" class="section">
+      <div class="banner">
+        <div class="menu">
+          <a href="#" onclick="showSection('technik')">
+            <img src="img/logo.png" alt="Logo" class="logo">
+          </a>
+          <ul>
+            <li><a href="#">Platzhalter</a></li>
+            <li><a href="#">Platzhalter</a></li>
+            <li><a href="#">Platzhalter</a></li>
+          </ul>
+          <ul>
+            <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Startseite</a></li>
+            <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-gamepad"></i> Gaming-Lounge</a></li>
+            <li><a href="#" onclick="showSection('technik')"><i class="fas fa-tools"></i> Technik-Lounge</a></li>
+            <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-cube"></i> 3D-Lounge</a></li>
+          </ul>
+        </div>
+        <div class="content">
+          <h1>Tims World TV (TWTV)</h1>
+          <p>Reparatur Videos, Vlogs und vieles mehr</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TGW (Tims Gaming World / Gaming) -->
+    <div id="tgw" class="section">
+      <div class="banner">
+        <div class="menu">
+          <a href="#" onclick="showSection('tgw')">
+            <img src="img/tgw.png" alt="Logo" class="logo">
+          </a>
+          <ul>
+            <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-home"></i> TGW-Startseite</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> TGW-Infos</a></li>
+            <li><a href="#"><i class="fas fa-play"></i> TGW-Letsplays</a></li>
+          </ul>
+          <ul>
+            <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Startseite</a></li>
+            <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-gamepad"></i> Gaming-Lounge</a></li>
+            <li><a href="#" onclick="showSection('technik')"><i class="fas fa-tools"></i> Technik-Lounge</a></li>
+            <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-cube"></i> 3D-Lounge</a></li>
+          </ul>
+        </div>
+        <div class="content">
+          <h1>Tims Gaming World (TGW)</h1>
+          <p>Das ist die Gaming-Lounge – ein Ort nur für Zocker!</p>
+          <div class="important">
+            <a href="#">Zur alten TWTV-Seite</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fehlerseite (404) -->
+    <div id="error" class="section">
+      <div class="banner">
+        <div class="menu">
+          <a href="#" onclick="showSection('home')">
+            <img src="img/logo.png" alt="Logo" class="logo">
+          </a>
+        </div>
+        <div class="content">
+          <h1>Fehler 404</h1>
+          <p class="important2">
+            Es ist ein Fehler aufgetreten. Klick <a href="#" onclick="showSection('home')">hier</a>, um zur Startseite zurückzukehren.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D (Tims 3D World) -->
+    <div id="dreiD" class="section">
+      <div class="banner">
+        <div class="menu">
+          <a href="#" onclick="showSection('dreiD')">
+            <img src="img/t3dw.png" alt="Logo" class="logo">
+          </a>
+          <ul>
+            <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-home"></i> T3DW-Startseite</a></li>
+            <li><a href="#"><i class="fas fa-download"></i> STL-Downloads</a></li>
+          </ul>
+          <ul>
+            <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Startseite</a></li>
+            <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-gamepad"></i> Gaming-Lounge</a></li>
+            <li><a href="#" onclick="showSection('technik')"><i class="fas fa-tools"></i> Technik-Lounge</a></li>
+            <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-cube"></i> 3D-Lounge</a></li>
+          </ul>
+        </div>
+        <div class="content">
+          <h1>Tims 3D World (T3DW)</h1>
+          <p>Alles rund um FreeCAD</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

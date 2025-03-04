@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tims World TV – Multiverse der Kreativität</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #00bcd4;
+        --secondary-color: #ff6b6b;
+        --accent-color: #4CAF50;
+        --background-color: #f0f4f8;
+        --dark-color: #1a1a2e;
+        --light-color: #f4f4f4;
+        --gradient-primary: linear-gradient(135deg, #00bcd4, #1976d2);
+        --gradient-secondary: linear-gradient(135deg, #ff6b6b, #ff3d00);
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      
+      body {
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background-color);
+        color: var(--dark-color);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      
+      header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1000;
+      }
+      
+      nav {
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1100;
+        transition: all 0.3s ease;
+      }
+      
+      nav ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 15px 0;
+      }
+      
+      nav ul li {
+        margin: 0 15px;
+        position: relative;
+      }
+      
+      nav ul li a {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      nav ul li a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+      
+      nav ul li a:hover::before {
+        transform: scaleX(1);
+      }
+      
+      .section {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+        min-height: calc(100vh - 200px);
+      }
+      
+      .active {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .banner {
+        min-height: 70vh;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1;
+      }
+      
+      .banner-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+      }
+      
+      .banner h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        background: linear-gradient(45deg, white, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .banner p {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+      
+      .btn {
+        display: inline-block;
+        background: var(--gradient-secondary);
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      }
+      
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+      }
+      
+      footer {
+        background: var(--dark-color);
+        color: #fff;
+        text-align: center;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      footer .social-icons {
+        display: flex;
+        margin-bottom: 20px;
+      }
+      
+      footer .social-icons a {
+        color: white;
+        margin: 0 15px;
+        font-size: 24px;
+        transition: color 0.3s ease;
+      }
+      
+      footer .social-icons a:hover {
+        color: var(--primary-color);
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        nav ul li {
+          margin: 10px 0;
+        }
+        
+        .banner h1 {
+          font-size: 2.5rem;
+        }
+        
+        .banner p {
+          font-size: 1.3rem;
+        }
+      }
+    </style>
+    <script>
+      function showSection(id) {
+        // Hide all sections
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Show selected section
+        const selectedSection = document.getElementById(id);
+        selectedSection.classList.add('active');
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
+      }
+      
+      // Enhanced page load animation
+      window.addEventListener('load', () => {
+        showSection('home');
+        document.querySelectorAll('.section').forEach(section => {
+          section.style.animation = 'fadeIn 0.8s ease forwards';
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Tims World – Multiverse der Kreativität</h1>
+    </header>
+    
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#" onclick="showSection('technik')"><i class="fas fa-laptop"></i> Technik</a></li>
+        <li><a href="#" onclick="showSection('tgw')"><i class="fas fa-gamepad"></i> Gaming</a></li>
+        <li><a href="#" onclick="showSection('dreiD')"><i class="fas fa-cube"></i> 3D-Lounge</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Home Section -->
+    <div id="home" class="section">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://source.unsplash.com/random/1600x900?technology');">
+        <div class="banner-content">
+          <h1>Willkommen im Tims World Universum</h1>
+          <p>Entdecke Reparaturen, Gaming, Vlogs und 3D-Welten – Kreativität ohne Grenzen!</p>
+          <a href="#" class="btn" onclick="showSection('technik')">Explore Now</a>
+        </div>
+      </div>
+      <p style="text-align:center; padding:20px; background-color: var(--light-color);">Version 3.0 lädt... Neue Abenteuer warten!</p>
+    </div>
+    
+    <!-- Technik Section -->
+    <div id="technik" class="section">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1600x900?tech');">
+        <div class="banner-content">
+          <h1>Tims Technik Lounge</h1>
+          <p>Reparaturen, Tutorials und technische Innovationen – Lernen und Entdecken!</p>
+          <a href="#" class="btn" onclick="showSection('home')">Zurück</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Gaming Section -->
+    <div id="tgw" class="section">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1600x900?gaming');">
+        <div class="banner-content">
+          <h1>Tims Gaming Welt</h1>
+          <p>Zocken, Streamen, Spaß – Hier leben Gamer ihre Leidenschaft!</p>
+          <a href="#" class="btn" onclick="showSection('home')">Zurück</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 3D Section -->
+    <div id="dreiD" class="section">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1600x900?3dprinting');">
+        <div class="banner-content">
+          <h1>Tims 3D Universum</h1>
+          <p>FreeCAD, 3D-Druck und Maker-Leidenschaft – Kreativität wird real!</p>
+          <a href="#" class="btn" onclick="showSection('home')">Zurück</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Error Section -->
+    <div id="error" class="section">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://source.unsplash.com/random/1600x900?error');">
+        <div class="banner-content">
+          <h1>Fehler 404</h1>
+          <p>Ups! Die Seite wurde nicht gefunden. Zurück zum sicheren Hafen!</p>
+          <a href="#" class="btn" onclick="showSection('home')">Startseite</a>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-twitch"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>&copy; 2025 Tims World TV. Alle Rechte vorbehalten.</p>
+    </footer>
+  </body>
+</html>
