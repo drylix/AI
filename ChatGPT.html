@@ -1,218 +1,989 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>Multi Page – TWTV, TGW, T3DW & Co.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern RSS Feed Reader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-      :root {
-        --primary-color: #00bcd4;
-        --secondary-color: #ff6b6b;
-        --background-color: #f4f4f4;
-        --dark-color: #333;
-        --banner-gradient: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4));
-      }
-      
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
-      
-      body {
-        background-color: var(--background-color);
-        color: var(--dark-color);
-        line-height: 1.6;
-      }
-      
-      header {
-        background: var(--primary-color);
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
-      
-      nav {
-        background: #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-      }
-      
-      nav ul {
-        display: flex;
-        justify-content: center;
-        list-style: none;
-      }
-      
-      nav ul li {
-        margin: 0 15px;
-      }
-      
-      nav ul li a {
-        text-decoration: none;
-        color: var(--dark-color);
-        padding: 10px;
-        transition: color 0.3s ease, background-color 0.3s ease;
-      }
-      
-      nav ul li a:hover {
-        color: var(--primary-color);
-        background-color: rgba(0,188,212,0.1);
-        border-radius: 5px;
-      }
-      
-      .section {
-        display: none;
-        padding: 60px 20px;
-      }
-      
-      .active {
-        display: block;
-      }
-      
-      .banner {
-        min-height: 60vh;
-        background: var(--banner-gradient), url('img/background.jpg') no-repeat center/cover;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-align: center;
-        padding: 20px;
-        animation: fadeIn 1s ease;
-      }
-      
-      .banner h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-      }
-      
-      .banner p {
-        font-size: 1.5rem;
-        max-width: 800px;
-        margin-bottom: 30px;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-      }
-      
-      .btn {
-        display: inline-block;
-        background: var(--secondary-color);
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-      }
-      
-      .btn:hover {
-        background: darkred;
-      }
-      
-      footer {
-        background: #222;
-        color: #fff;
-        text-align: center;
-        padding: 20px;
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      
-      @media (max-width: 768px) {
-        nav ul {
-          flex-direction: column;
-          padding: 10px;
+        :root {
+            --primary-color: #3a86ff;
+            --primary-hover: #2a75ee;
+            --secondary-color: #ff006e;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --small-radius: 8px;
         }
-        .banner h1 {
-          font-size: 2.5rem;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .banner p {
-          font-size: 1.2rem;
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-      }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 0;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--light-text);
+            margin-bottom: 25px;
+        }
+
+        .theme-toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .theme-toggle.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+        }
+
+        .search-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .search-container:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .search-form {
+            display: flex;
+            overflow: hidden;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 18px 20px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-button {
+            padding: 0 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .quick-link {
+            padding: 10px 18px;
+            background-color: var(--card-bg);
+            border-radius: 50px;
+            border: 1px solid rgba(0,0,0,0.08);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .quick-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-option {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--light-text);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .view-option.active, .view-option:hover {
+            color: var(--primary-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--light-text);
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #842029;
+            background-color: #f8d7da;
+            border-radius: var(--small-radius);
+            padding: 15px 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-icon {
+            font-size: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--light-text);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--small-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-image-wrapper {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f0f0f0;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card-image:hover {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light-text);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card-title:hover {
+            color: var(--primary-color);
+        }
+
+        .card-bottom {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-action {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .card-action:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .bookmark-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        .swipe-indicator {
+            text-align: center;
+            margin: 15px 0 30px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .list-view .cards-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .list-view .card {
+            height: auto;
+            flex-direction: row;
+        }
+
+        .list-view .card-image-wrapper {
+            width: 180px;
+            height: 180px;
+            flex-shrink: 0;
+        }
+
+        .dark-mode {
+            --text-color: #e9ecef;
+            --light-text: #adb5bd;
+            --background: #212529;
+            --card-bg: #343a40;
+            --shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                padding: 15px;
+            }
+            
+            .list-view .card {
+                flex-direction: column;
+            }
+            
+            .list-view .card-image-wrapper {
+                width: 100%;
+            }
+            
+            .quick-links {
+                gap: 8px;
+            }
+            
+            .quick-link {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .swipe-left {
+            animation: swipeLeft 0.3s ease forwards;
+        }
+
+        .swipe-right {
+            animation: swipeRight 0.3s ease forwards;
+        }
+
+        @keyframes swipeLeft {
+            to { transform: translateX(-100%); opacity: 0; }
+        }
+
+        @keyframes swipeRight {
+            to { transform: translateX(100%); opacity: 0; }
+        }
     </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Modern RSS Reader</h1>
+            <p>Entdecke und lese deine Lieblings-Nachrichtenquellen</p>
+            <div class="theme-toggle-container">
+                <button class="theme-toggle active" id="light-mode">☀️</button>
+                <button class="theme-toggle" id="dark-mode">🌙</button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <form class="search-form" id="feed-form">
+                <input type="text" class="search-input" id="feed-url" placeholder="RSS Feed URL eingeben..." value="https://feeds.bbci.co.uk/news/world/rss.xml">
+                <button type="submit" class="search-button">Feed laden</button>
+            </form>
+        </div>
+
+        <div class="quick-links">
+            <button class="quick-link" data-url="https://rss.nytimes.com/services/xml/rss/nyt/World.xml">New York Times</button>
+            <button class="quick-link" data-url="https://feeds.bbci.co.uk/news/world/rss.xml">BBC News</button>
+            <button class="quick-link" data-url="https://www.spiegel.de/schlagzeilen/tops/index.rss">Spiegel Online</button>
+            <button class="quick-link" data-url="https://www.heise.de/rss/heise.rdf">Heise Online</button>
+            <button class="quick-link" data-url="https://www.wired.com/feed/rss">Wired</button>
+            <button class="quick-link" data-url="https://feeds.npr.org/1001/rss.xml">NPR News</button>
+        </div>
+
+        <div class="swipe-indicator">
+            <span>👆</span> Wische die Karten nach links oder rechts, um sie zu entfernen
+        </div>
+
+        <div class="status-bar">
+            <div class="feed-info" id="feed-info"></div>
+            <div class="view-options">
+                <button class="view-option active" id="grid-view" title="Grid-Ansicht">📱</button>
+                <button class="view-option" id="list-view" title="Listen-Ansicht">📃</button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div>Feed wird geladen...</div>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <span class="error-icon">⚠️</span>
+            <span id="error-message"></span>
+        </div>
+
+        <div id="cards-container" class="cards-grid">
+            <div class="empty-state">
+                <div class="empty-state-icon">📰</div>
+                <p>Gib eine RSS Feed URL ein und klicke auf "Feed laden" um zu starten</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script>
-      // Zeigt den gewünschten Abschnitt an
-      function showSection(id) {
-        var sections = document.querySelectorAll('.section');
-        sections.forEach(function(section) {
-          section.classList.remove('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM-Elemente
+            const feedForm = document.getElementById('feed-form');
+            const feedUrlInput = document.getElementById('feed-url');
+            const cardsContainer = document.getElementById('cards-container');
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error');
+            const errorMessageElement = document.getElementById('error-message');
+            const quickLinks = document.querySelectorAll('.quick-link');
+            const gridViewButton = document.getElementById('grid-view');
+            const listViewButton = document.getElementById('list-view');
+            const lightModeButton = document.getElementById('light-mode');
+            const darkModeButton = document.getElementById('dark-mode');
+            const feedInfo = document.getElementById('feed-info');
+
+            // CORS-Proxies mit mehreren Alternativen
+            const CORS_PROXIES = [
+                'https://api.allorigins.win/raw?url=',
+                'https://corsproxy.io/?',
+                'https://cors-anywhere.herokuapp.com/',
+                'https://thingproxy.freeboard.io/fetch/',
+                'https://api.codetabs.com/v1/proxy?quest='
+            ];
+            let currentProxyIndex = 0;
+            let currentFeedTitle = '';
+            let imageLoadRetries = {};
+            
+            // Event Listeners
+            feedForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                loadFeed();
+            });
+
+            // Quick Links
+            quickLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    feedUrlInput.value = this.getAttribute('data-url');
+                    loadFeed();
+                });
+            });
+
+            // Wechsel der Ansichten
+            gridViewButton.addEventListener('click', function() {
+                document.querySelector('.cards-grid').classList.remove('list-view');
+                gridViewButton.classList.add('active');
+                listViewButton.classList.remove('active');
+            });
+
+            listViewButton.addEventListener('click', function() {
+                document.querySelector('.cards-grid').classList.add('list-view');
+                listViewButton.classList.add('active');
+                gridViewButton.classList.remove('active');
+            });
+
+            // Theme-Wechsel-Funktionalität
+            lightModeButton.addEventListener('click', function() {
+                document.body.classList.remove('dark-mode');
+                lightModeButton.classList.add('active');
+                darkModeButton.classList.remove('active');
+                
+                // Speichere die Präferenz im localStorage
+                localStorage.setItem('theme', 'light');
+            });
+
+            darkModeButton.addEventListener('click', function() {
+                document.body.classList.add('dark-mode');
+                darkModeButton.classList.add('active');
+                lightModeButton.classList.remove('active');
+                
+                // Speichere die Präferenz im localStorage
+                localStorage.setItem('theme', 'dark');
+            });
+            
+            // Überprüfe die gespeicherte Theme-Präferenz beim Laden
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                darkModeButton.classList.add('active');
+                lightModeButton.classList.remove('active');
+            } else {
+                // Light Mode ist die Standardeinstellung
+                document.body.classList.remove('dark-mode');
+                lightModeButton.classList.add('active');
+                darkModeButton.classList.remove('active');
+            }
+
+            // Fallback-Daten
+            const FALLBACK_DATA = [
+                {
+                    title: "Neue KI-Technologie revolutioniert den Pflegesektor",
+                    link: "https://example.com/news/1",
+                    pubDate: new Date().toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "Tech Daily"
+                },
+                {
+                    title: "Durchbruch in erneuerbaren Energien: Solar mit 40% Effizienz",
+                    link: "https://example.com/news/2",
+                    pubDate: new Date(Date.now() - 86400000).toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "Green Energy News"
+                },
+                {
+                    title: "Neues Klimaabkommen: 150 Länder verpflichten sich zu ambitionierten Zielen",
+                    link: "https://example.com/news/3",
+                    pubDate: new Date(Date.now() - 2*86400000).toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "World Politics"
+                },
+                {
+                    title: "Quantencomputer erreicht Rechenleistung von 1000 Qubits",
+                    link: "https://example.com/news/4",
+                    pubDate: new Date(Date.now() - 3*86400000).toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "Science Weekly"
+                },
+                {
+                    title: "Neue Therapie gegen Alzheimer zeigt vielversprechende Ergebnisse",
+                    link: "https://example.com/news/5",
+                    pubDate: new Date(Date.now() - 4*86400000).toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "Health Updates"
+                },
+                {
+                    title: "Weltraumteleskop entdeckt erdähnlichen Planeten in habitabler Zone",
+                    link: "https://example.com/news/6",
+                    pubDate: new Date(Date.now() - 5*86400000).toISOString(),
+                    imageUrl: "/api/placeholder/600/400",
+                    source: "Space Discoveries"
+                }
+            ];
+
+            // Feed laden
+            function loadFeed() {
+                const feedUrl = feedUrlInput.value.trim();
+                
+                if (!feedUrl) {
+                    showError('Bitte gib eine Feed URL ein');
+                    return;
+                }
+
+                // Lade-Anzeige einblenden
+                cardsContainer.innerHTML = '';
+                loadingElement.style.display = 'flex';
+                errorElement.style.display = 'none';
+                feedInfo.textContent = '';
+
+                // Proxy-Index zurücksetzen und ersten Proxy versuchen
+                currentProxyIndex = 0;
+                imageLoadRetries = {}; // Reset image retry counter
+                tryNextProxy(feedUrl);
+            }
+
+            // Verschiedene Proxies ausprobieren
+            function tryNextProxy(feedUrl) {
+                if (currentProxyIndex >= CORS_PROXIES.length) {
+                    console.log("Alle Proxies fehlgeschlagen, verwende Fallback-Daten");
+                    displayFallbackData();
+                    return;
+                }
+
+                const currentProxy = CORS_PROXIES[currentProxyIndex];
+                const proxyUrl = currentProxy + encodeURIComponent(feedUrl);
+                
+                console.log(`Versuche Proxy ${currentProxyIndex + 1}/${CORS_PROXIES.length}: ${currentProxy}`);
+                
+                fetch(proxyUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Netzwerkfehler beim Laden des Feeds');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        if (!data || data.trim() === '') {
+                            throw new Error('Leere Antwort vom Server');
+                        }
+                        processRSSData(data);
+                    })
+                    .catch(error => {
+                        console.error(`Proxy ${currentProxyIndex + 1} fehlgeschlagen:`, error);
+                        currentProxyIndex++;
+                        tryNextProxy(feedUrl);
+                    });
+            }
+
+            // Verbesserte Funktion zum Extrahieren von Bildern aus RSS-Items
+            function extractImageFromRSSItem(item, link) {
+                let imageUrl = null;
+                
+                // Option 1: <enclosure> mit Bildtyp
+                const enclosures = item.querySelectorAll('enclosure');
+                for (let enclosure of enclosures) {
+                    const type = enclosure.getAttribute('type');
+                    if (type && type.startsWith('image') && enclosure.getAttribute('url')) {
+                        imageUrl = enclosure.getAttribute('url');
+                        break;
+                    }
+                }
+                
+                // Option 2: Media-Namespace
+                if (!imageUrl) {
+                    const mediaContent = item.querySelector('media\\:content, content[type^="image"]');
+                    if (mediaContent && mediaContent.getAttribute('url')) {
+                        imageUrl = mediaContent.getAttribute('url');
+                    }
+                }
+                
+                if (!imageUrl) {
+                    const mediaThumbnail = item.querySelector('media\\:thumbnail, thumbnail');
+                    if (mediaThumbnail && mediaThumbnail.getAttribute('url')) {
+                        imageUrl = mediaThumbnail.getAttribute('url');
+                    }
+                }
+                
+                // Option 3: Bild aus Beschreibung extrahieren
+                if (!imageUrl) {
+                    const description = item.querySelector('description, summary, content\\:encoded, content');
+                    if (description && description.textContent) {
+                        const descText = description.textContent;
+                        const imgMatch = descText.match(/<img[^>]+src="([^">]+)"/i);
+                        if (imgMatch && imgMatch[1]) {
+                            imageUrl = imgMatch[1];
+                        }
+                    }
+                }
+                
+                // Option 4: <image> Tag
+                if (!imageUrl) {
+                    const image = item.querySelector('image');
+                    if (image && image.querySelector('url')) {
+                        imageUrl = image.querySelector('url').textContent;
+                    }
+                }
+                
+                // Default-Fallback-Bild
+                return imageUrl || "/api/placeholder/600/400";
+            }
+            
+            // Für Atom-Feeds
+            function extractImageFromAtomEntry(entry, link) {
+                let imageUrl = null;
+                
+                // Option 1: Media-Namespace
+                const mediaContent = entry.querySelector('media\\:content, content[type^="image"]');
+                if (mediaContent && mediaContent.getAttribute('url')) {
+                    imageUrl = mediaContent.getAttribute('url');
+                }
+                
+                // Option 2: Bild aus content extrahieren
+                if (!imageUrl) {
+                    const content = entry.querySelector('content');
+                    if (content && content.textContent) {
+                        const imgMatch = content.textContent.match(/<img[^>]+src="([^">]+)"/i);
+                        if (imgMatch && imgMatch[1]) {
+                            imageUrl = imgMatch[1];
+                        }
+                    }
+                }
+                
+                // Option 3: Link mit rel="enclosure" und image type
+                if (!imageUrl) {
+                    const enclosureLink = entry.querySelector('link[rel="enclosure"][type^="image"]');
+                    if (enclosureLink && enclosureLink.getAttribute('href')) {
+                        imageUrl = enclosureLink.getAttribute('href');
+                    }
+                }
+                
+                return imageUrl || "/api/placeholder/600/400";
+            }
+            
+            // Verbesserte Funktion zum Abrufen des ersten Bildes von der Artikelseite
+            async function fetchArticleImage(articleUrl, imgElement, fallbackImage, retryCount = 0) {
+                // Wenn wir die URL bereits zu oft versucht haben, brechen wir ab
+                const urlKey = String(articleUrl);
+                imageLoadRetries[urlKey] = (imageLoadRetries[urlKey] || 0) + 1;
+                
+                if (imageLoadRetries[urlKey] > 2 || retryCount > 1) {
+                    console.log(`Zu viele Versuche für ${articleUrl}, verwende Fallback-Bild`);
+                    if (fallbackImage && fallbackImage !== "/api/placeholder/600/400") {
+                        imgElement.src = fallbackImage;
+                    }
+                    return;
+                }
+                
+                try {
+                    // Verwende einen CORS-Proxy, um die Seite aufzurufen
+                    // Versuche verschiedene Proxies rotierend
+                    const proxyIndex = retryCount % CORS_PROXIES.length;
+                    const proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(articleUrl);
+                    
+                    // Setze ein Timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 7000);
+                    
+                    const response = await fetch(proxyUrl, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error('Fehler beim Laden der Artikelseite');
+                    }
+                    
+                    const html = await response.text();
+                    
+                    // HTML parsen
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Optimierte Suchstrategie für Bilder
+                    // 1. Open Graph Meta-Tag
+                    let imgSrc = doc.querySelector('meta[property="og:image"], meta[property="og:image:url"]')?.getAttribute('content');
+                    
+                    // 2. Twitter Card Image
+                    if (!imgSrc) {
+                        imgSrc = doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
+                    }
+                    
+                    // 3. Schema.org JSON-LD
+                    if (!imgSrc) {
+                        const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
+                        for (const script of jsonLdScripts) {
+                            try {
+                                const data = JSON.parse(script.textContent);
+                                // Verschiedene Schema.org-Strukturen prüfen
+                                if (data.image) {
+                                    imgSrc = typeof data.image === 'string' ? data.image : data.image.url || data.image[0];
+                                    if (imgSrc) break;
+                                }
+                            } catch (e) {
+                                console.warn('Fehler beim Parsen von JSON-LD', e);
+                            }
+                        }
+                    }
+                    
+                    // 4. Canonical Artikelbild suchen
+                    if (!imgSrc) {
+                        // Priorität nach Attributen und Klassen, die oft für Hauptbilder verwendet werden
+                        const imgCandidates = doc.querySelectorAll(
+                            'img[class*="lead"], img[class*="main"], img[class*="hero"], ' + 
+                            'img[class*="feature"], img[class*="primary"], img[class*="article"], ' +
+                            'img[data-src][data-src$=".jpg"], img[data-src][data-src$=".png"], img[data-srcset]'
+                        );
+                        
+                        let bestImage = null;
+                        let largestArea = 0;
+                        
+                        for (const img of imgCandidates) {
+                            // Ignoriere kleine Bilder, Icons, Logos und Avatare
+                            if (img.src && (img.src.includes('icon') || img.src.includes('logo') || img.src.includes('avatar'))) {
+                                continue;
+                            }
+                            
+                            const width = parseInt(img.getAttribute('width') || '0');
+                            const height = parseInt(img.getAttribute('height') || '0'); // Fehler behoben: Feste Höhe, falls nicht vorhanden
+                            const area = width * height;
+                            
+                            if (area > largestArea) {
+                                largestArea = area;
+                                bestImage = img;
+                            }
+                        }
+                        
+                        if (bestImage) {
+                            imgSrc = bestImage.src || bestImage.getAttribute('data-src') || bestImage.getAttribute('data-srcset');
+                        }
+                    }
+                    
+                    // Wenn ein Bild gefunden wurde, setze es
+                    if (imgSrc) {
+                        imgElement.src = imgSrc;
+                    } else {
+                        // Wenn kein Bild gefunden wurde, versuche es erneut mit einem anderen Proxy
+                        fetchArticleImage(articleUrl, imgElement, fallbackImage, retryCount + 1);
+                    }
+                } catch (error) {
+                    console.error(`Fehler beim Abrufen des Bildes von ${articleUrl}:`, error);
+                    // Versuche es erneut mit einem anderen Proxy
+                    fetchArticleImage(articleUrl, imgElement, fallbackImage, retryCount + 1);
+                }
+            }
+
+            // RSS-Daten verarbeiten
+            function processRSSData(data) {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                
+                const feedTitle = xmlDoc.querySelector('channel > title, feed > title')?.textContent || 'RSS Feed';
+                currentFeedTitle = feedTitle;
+                feedInfo.textContent = `Feed: ${feedTitle}`;
+                
+                const items = xmlDoc.querySelectorAll('item, entry');
+                if (items.length === 0) {
+                    showError('Keine Artikel im Feed gefunden');
+                    return;
+                }
+                
+                cardsContainer.innerHTML = '';
+                items.forEach(item => {
+                    const title = item.querySelector('title')?.textContent || 'Kein Titel';
+                    const link = item.querySelector('link')?.textContent || item.querySelector('link')?.getAttribute('href') || '#';
+                    const pubDate = item.querySelector('pubDate, updated')?.textContent || new Date().toISOString();
+                    const source = item.querySelector('source, author > name')?.textContent || 'Unbekannte Quelle';
+                    
+                    // Bild extrahieren
+                    const imageUrl = item.tagName === 'entry' ? extractImageFromAtomEntry(item, link) : extractImageFromRSSItem(item, link);
+                    
+                    // Karte erstellen
+                    const card = document.createElement('div');
+                    card.className = 'card fade-in';
+                    card.innerHTML = `
+                        <div class="card-image-wrapper">
+                            <img src="${imageUrl}" alt="${title}" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span>${new Date(pubDate).toLocaleDateString()}</span>
+                                <span>${source}</span>
+                            </div>
+                            <h3 class="card-title">${title}</h3>
+                            <div class="card-bottom">
+                                <a href="${link}" target="_blank" class="card-action">Lesen</a>
+                                <button class="bookmark-btn">🔖</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Bild-Element
+                    const imgElement = card.querySelector('.card-image');
+                    
+                    // Fallback-Bild setzen, falls das Bild nicht geladen werden kann
+                    imgElement.onerror = function() {
+                        fetchArticleImage(link, imgElement, imageUrl);
+                    };
+                    
+                    // Swipe-Funktionalität hinzufügen
+                    const hammer = new Hammer(card);
+                    hammer.on('swipeleft swiperight', function(ev) {
+                        card.classList.add(ev.type === 'swipeleft' ? 'swipe-left' : 'swipe-right');
+                        setTimeout(() => card.remove(), 300);
+                    });
+                    
+                    cardsContainer.appendChild(card);
+                });
+                
+                loadingElement.style.display = 'none';
+            }
+
+            // Fallback-Daten anzeigen
+            function displayFallbackData() {
+                cardsContainer.innerHTML = '';
+                FALLBACK_DATA.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card fade-in';
+                    card.innerHTML = `
+                        <div class="card-image-wrapper">
+                            <img src="${item.imageUrl}" alt="${item.title}" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-meta">
+                                <span>${new Date(item.pubDate).toLocaleDateString()}</span>
+                                <span>${item.source}</span>
+                            </div>
+                            <h3 class="card-title">${item.title}</h3>
+                            <div class="card-bottom">
+                                <a href="${item.link}" target="_blank" class="card-action">Lesen</a>
+                                <button class="bookmark-btn">🔖</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Swipe-Funktionalität hinzufügen
+                    const hammer = new Hammer(card);
+                    hammer.on('swipeleft swiperight', function(ev) {
+                        card.classList.add(ev.type === 'swipeleft' ? 'swipe-left' : 'swipe-right');
+                        setTimeout(() => card.remove(), 300);
+                    });
+                    
+                    cardsContainer.appendChild(card);
+                });
+                
+                loadingElement.style.display = 'none';
+            }
+
+            // Fehler anzeigen
+            function showError(message) {
+                errorMessageElement.textContent = message;
+                errorElement.style.display = 'flex';
+                loadingElement.style.display = 'none';
+            }
         });
-        document.getElementById(id).classList.add('active');
-      }
-      
-      window.onload = function() {
-        showSection('home');
-      }
     </script>
-  </head>
-  <body>
-    <header>
-      <h1>Willkommen bei Tims World TV</h1>
-    </header>
-    <nav>
-      <ul>
-        <li><a href="#" onclick="showSection('home')">Home</a></li>
-        <li><a href="#" onclick="showSection('technik')">Technik</a></li>
-        <li><a href="#" onclick="showSection('tgw')">Gaming</a></li>
-        <li><a href="#" onclick="showSection('dreiD')">3D-Lounge</a></li>
-      </ul>
-    </nav>
-    
-    <!-- Home -->
-    <div id="home" class="section active">
-      <div class="banner">
-        <h1>DIE OFFIZIELLE TIMS WORLD TV WEBSITE</h1>
-        <p>Reparatur Videos, Gaming, Vlogs, 3D Printing – hier ist für jeden etwas dabei!</p>
-        <a href="#" class="btn" onclick="showSection('technik')">Mehr erfahren</a>
-      </div>
-      <p style="text-align:center; padding:20px;">Der Download der Version 2.1 wird gestartet...</p>
-    </div>
-    
-    <!-- Technik -->
-    <div id="technik" class="section">
-      <div class="banner" style="background: var(--banner-gradient), url('img/technik-bg.jpg') no-repeat center/cover;">
-        <h1>Tims World TV – Technik Lounge</h1>
-        <p>Reparatur Videos, Vlogs und vieles mehr rund um Technik.</p>
-        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
-      </div>
-    </div>
-    
-    <!-- Gaming -->
-    <div id="tgw" class="section">
-      <div class="banner" style="background: var(--banner-gradient), url('img/gaming-bg.jpg') no-repeat center/cover;">
-        <h1>Tims Gaming World (TGW)</h1>
-        <p>Hier trifft sich die Gaming-Community – Zocken und Spaß pur!</p>
-        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
-      </div>
-    </div>
-    
-    <!-- 3D -->
-    <div id="dreiD" class="section">
-      <div class="banner" style="background: var(--banner-gradient), url('img/3d-bg.jpg') no-repeat center/cover;">
-        <h1>Tims 3D World (T3DW)</h1>
-        <p>Alles rund um FreeCAD und 3D Printing.</p>
-        <a href="#" class="btn" onclick="showSection('home')">Zurück zur Startseite</a>
-      </div>
-    </div>
-    
-    <!-- Fehler 404 -->
-    <div id="error" class="section">
-      <div class="banner" style="background: var(--banner-gradient), url('img/error-bg.jpg') no-repeat center/cover;">
-        <h1>Fehler 404</h1>
-        <p>Die gesuchte Seite konnte nicht gefunden werden.</p>
-        <a href="#" class="btn" onclick="showSection('home')">Zur Startseite</a>
-      </div>
-    </div>
-    
-    <footer>
-      <p>&copy; 2025 Tims World TV. Alle Rechte vorbehalten.</p>
-    </footer>
-  </body>
+</body>
 </html>
